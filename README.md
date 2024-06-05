@@ -12,7 +12,7 @@ SeaGuard é um projeto de monitoramento e coleta de lixo no mar utilizando senso
 - Arduino
 - Sensor de temperatura DS18B20
 - Sensor ultrassônico HC-SR04
-- LEDs (verde, vermelho e amarelo)
+- LEDs (verde, vermelho e azul)
 - Servo motor
 - Módulo RTC DS1307
 - Módulo EEPROM
@@ -34,7 +34,7 @@ SeaGuard é um projeto de monitoramento e coleta de lixo no mar utilizando senso
 - LEDs:
   - Verde no pino 4 do Arduino.
   - Vermelho no pino 5 do Arduino.
-  - Amarelo no pino 6 do Arduino.
+  - Azul no pino 6 do Arduino.
 - Servo motor: Pino de controle no pino 3 do Arduino.
 - RTC DS1307: Conectado aos pinos SDA e SCL do Arduino.
 - EEPROM: Conectada aos pinos SDA e SCL do Arduino.
@@ -50,7 +50,7 @@ SeaGuard é um projeto de monitoramento e coleta de lixo no mar utilizando senso
 
 - **Verde**: Indica temperatura dentro da faixa normal (abaixo de 35°C).
 - **Vermelho**: Acende quando lixo é detectado.
-- **Amarelo**: Indica operação do servo motor para coleta do lixo.
+- **Azul**: Indica operação do servo motor para coleta do lixo.
 
 ### Servo Motor
 
@@ -81,7 +81,7 @@ Mantém o registro de tempo real para timestamp das leituras e irregularidades.
 // Define pins for LEDs
 #define LED_GREEN 4
 #define LED_RED 5
-#define LED_YELLOW 6
+#define LED_BLUE 6
 
 // Define pin for servo motor
 #define SERVO_PIN 3
@@ -114,7 +114,7 @@ void setup() {
   pinMode(ECHO_PIN, INPUT);
   pinMode(LED_GREEN, OUTPUT);
   pinMode(LED_RED, OUTPUT);
-  pinMode(LED_YELLOW, OUTPUT);
+  pinMode(LED_BLUE, OUTPUT);
 
   sensors.begin();
   servo.attach(SERVO_PIN);
@@ -122,7 +122,7 @@ void setup() {
 
   digitalWrite(LED_GREEN, LOW);
   digitalWrite(LED_RED, LOW);
-  digitalWrite(LED_YELLOW, LOW);
+  digitalWrite(LED_BLUE, LOW);
 
   if (!rtc.begin()) {
     Serial.println("Couldn't find RTC");
@@ -172,11 +172,11 @@ void loop() {
   if (distance < 10) {
     digitalWrite(LED_RED, HIGH);
     delay(1000);
-    digitalWrite(LED_YELLOW, HIGH);
+    digitalWrite(LED_BLUE, HIGH);
     servo.write(90);
     delay(1000);
     servo.write(0);
-    digitalWrite(LED_YELLOW, LOW);
+    digitalWrite(LED_BLUE, LOW);
     digitalWrite(LED_RED, LOW);
 
     lixoDetectado = true;
