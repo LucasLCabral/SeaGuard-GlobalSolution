@@ -6,16 +6,27 @@ SeaGuard é um projeto de monitoramento e coleta de lixo no mar utilizando senso
   <img src="https://github.com/LucasLCabral/SeaGuard-GlobalSolution/assets/162235385/83aa8d30-88fc-43db-8aa7-1efce6718d1e" alt="SeaGuard" width="400"/>
 </p>
 
-## Autores
-  Lucas Ludovico Cabral - RM554589
-  Weslley Oliveira Cardoso - RM557927
+## Solução Proposta
+
+O objetivo do projeto SeaGuard é monitorar e coletar lixo no mar, utilizando a plataforma Arduino em conjunto com diversos sensores e atuadores. A solução busca detectar a presença de detritos na água e registrar irregularidades, como temperaturas anormais, para melhorar a saúde do ecossistema marinho.
+## Resultados Esperados e Impacto
+
+Expectativas de Resultados
+Monitoramento Contínuo: Espera-se que o sistema SeaGuard forneça monitoramento contínuo da temperatura da água e presença de detritos, permitindo a detecção precoce de problemas ambientais.
+Registro de Dados: Com a capacidade de registrar dados de irregularidades, o sistema fornecerá informações valiosas para análise posterior e tomada de decisão.
+Resposta Rápida: A detecção e coleta automáticas de lixo contribuirão para a limpeza do ambiente marinho, reduzindo o impacto negativo dos detritos no ecossistema.
+Impacto Positivo
+Melhoria da Qualidade da Água: Ao monitorar e coletar lixo, o projeto ajudará a manter a água mais limpa, beneficiando a vida marinha e a saúde do ecossistema.
+Prevenção de Poluição: A detecção precoce de anomalias térmicas e a coleta de lixo reduzirão a poluição, prevenindo danos a longo prazo.
+Educação e Conscientização: O projeto pode servir como uma ferramenta educativa para aumentar a conscientização sobre a importância da conservação marinha e o impacto do lixo nos oceanos.
+Dados para Pesquisa: Os dados coletados podem ser utilizados por pesquisadores e organizações ambientais para estudar padrões de poluição e desenvolver estratégias de mitigação.
 
 ## Componentes
 
 - Arduino
 - Sensor de temperatura DS18B20
 - Sensor ultrassônico HC-SR04
-- LEDs (verde, vermelho e azul)
+- LEDs (verde, vermelho e amarelo)
 - Servo motor
 - Módulo RTC DS1307
 - Módulo EEPROM
@@ -37,7 +48,7 @@ SeaGuard é um projeto de monitoramento e coleta de lixo no mar utilizando senso
 - LEDs:
   - Verde no pino 4 do Arduino.
   - Vermelho no pino 5 do Arduino.
-  - Azul no pino 6 do Arduino.
+  - Amarelo no pino 6 do Arduino.
 - Servo motor: Pino de controle no pino 3 do Arduino.
 - RTC DS1307: Conectado aos pinos SDA e SCL do Arduino.
 - EEPROM: Conectada aos pinos SDA e SCL do Arduino.
@@ -53,7 +64,7 @@ SeaGuard é um projeto de monitoramento e coleta de lixo no mar utilizando senso
 
 - **Verde**: Indica temperatura dentro da faixa normal (abaixo de 35°C).
 - **Vermelho**: Acende quando lixo é detectado.
-- **Azul**: Indica operação do servo motor para coleta do lixo.
+- **Amarelo**: Indica operação do servo motor para coleta do lixo.
 
 ### Servo Motor
 
@@ -84,7 +95,7 @@ Mantém o registro de tempo real para timestamp das leituras e irregularidades.
 // Define pins for LEDs
 #define LED_GREEN 4
 #define LED_RED 5
-#define LED_BLUE 6
+#define LED_YELLOW 6
 
 // Define pin for servo motor
 #define SERVO_PIN 3
@@ -117,7 +128,7 @@ void setup() {
   pinMode(ECHO_PIN, INPUT);
   pinMode(LED_GREEN, OUTPUT);
   pinMode(LED_RED, OUTPUT);
-  pinMode(LED_BLUE, OUTPUT);
+  pinMode(LED_YELLOW, OUTPUT);
 
   sensors.begin();
   servo.attach(SERVO_PIN);
@@ -125,7 +136,7 @@ void setup() {
 
   digitalWrite(LED_GREEN, LOW);
   digitalWrite(LED_RED, LOW);
-  digitalWrite(LED_BLUE, LOW);
+  digitalWrite(LED_YELLOW, LOW);
 
   if (!rtc.begin()) {
     Serial.println("Couldn't find RTC");
@@ -175,11 +186,11 @@ void loop() {
   if (distance < 10) {
     digitalWrite(LED_RED, HIGH);
     delay(1000);
-    digitalWrite(LED_BLUE, HIGH);
+    digitalWrite(LED_YELLOW, HIGH);
     servo.write(90);
     delay(1000);
     servo.write(0);
-    digitalWrite(LED_BLUE, LOW);
+    digitalWrite(LED_YELLOW, LOW);
     digitalWrite(LED_RED, LOW);
 
     lixoDetectado = true;
@@ -238,10 +249,14 @@ void printStatus(DateTime timestamp, float temperatureC, bool lixoDetectado) {
 }
 ```
 
-Licença
-Todos os direitos reservados. 1ESPI FIAP Global Solution 2024, first semester.
+Contribuição
+Faça um fork deste repositório.
+Crie uma branch para sua feature (git checkout -b feature/AmazingFeature).
+Commit suas mudanças (git commit -m 'Add some AmazingFeature').
+Dê um push na sua branch (git push origin feature/AmazingFeature).
+Abra um Pull Request.
 
 Contato
 Lucas Ludovico Cabral - lucasludovicocabraal@gmail.com
 
-Projeto Link: https://github.com/LucasLCabral/SeaGuard-GlobalSolution
+Projeto Link: https://github.com/LucasLCabral/SeaGuard
