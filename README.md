@@ -249,14 +249,7 @@ void printStatus(DateTime timestamp, float temperatureC, bool lixoDetectado) {
 }
 ```
 
-Contribuição
-Faça um fork deste repositório.
-Crie uma branch para sua feature (git checkout -b feature/AmazingFeature).
-Commit suas mudanças (git commit -m 'Add some AmazingFeature').
-Dê um push na sua branch (git push origin feature/AmazingFeature).
-Abra um Pull Request.
-
-Contato
+# Contato
 Lucas Ludovico Cabral - lucasludovicocabraal@gmail.com
 
 Projeto Link: https://github.com/LucasLCabral/SeaGuard
