@@ -78,6 +78,10 @@ Registra irregularidades (temperatura acima de 35°C ou detecção de lixo) com 
 
 Mantém o registro de tempo real para timestamp das leituras e irregularidades.
 
+## Link Visualização:
+
+https://wokwi.com/projects/399235287995375617
+
 ## Código
 
 ```cpp
