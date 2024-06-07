@@ -12,13 +12,16 @@
 // Define pins for LEDs
 #define LED_GREEN 4
 #define LED_RED 5
-#define LED_YELLOW 6
+#define LED_BLUE 6
 
 // Define pin for servo motor
 #define SERVO_PIN 3
 
 // Data wire is connected to pin 2 on the Arduino
 #define ONE_WIRE_BUS 2
+
+// Define pin for analog sensor (simulating pH sensor)
+#define PH_PIN A0
 
 // Setup a oneWire instance to communicate with any OneWire devices
 OneWire oneWire(ONE_WIRE_BUS);
@@ -34,7 +37,7 @@ Servo servo;
 
 // EEPROM configuration
 const int maxRecords = 100;
-const int recordSize = 8; // Tamanho de cada registro em bytes
+const int recordSize = 9; // Tamanho de cada registro em bytes, aumentado para incluir o valor do pH
 int startAddress = 0;
 int endAddress = maxRecords * recordSize;
 int currentAddress = 0;
@@ -45,7 +48,7 @@ void setup() {
   pinMode(ECHO_PIN, INPUT);
   pinMode(LED_GREEN, OUTPUT);
   pinMode(LED_RED, OUTPUT);
-  pinMode(LED_YELLOW, OUTPUT);
+  pinMode(LED_BLUE, OUTPUT);
 
   sensors.begin();
   servo.attach(SERVO_PIN);
@@ -53,7 +56,7 @@ void setup() {
 
   digitalWrite(LED_GREEN, LOW);
   digitalWrite(LED_RED, LOW);
-  digitalWrite(LED_YELLOW, LOW);
+  digitalWrite(LED_BLUE, LOW);
 
   // Initialize RTC
   if (!rtc.begin()) {
@@ -104,6 +107,15 @@ void loop() {
     digitalWrite(LED_GREEN, LOW);
   }
 
+  // Read pH value from analog sensor
+  int phValue = analogRead(PH_PIN);
+  float voltage = phValue * (5.0 / 1024.0); // Convert to voltage
+  float pH = 7 - ((voltage - 2.5) / 0.18); // Convert to pH value
+
+  // Print pH to Serial Monitor
+  Serial.print("pH Value: ");
+  Serial.println(pH);
+
   bool lixoDetectado = false;
 
   // If distance is less than 10 cm, assume waste is detected
@@ -111,38 +123,40 @@ void loop() {
     digitalWrite(LED_RED, HIGH); // Turn on red LED to indicate detection
     delay(1000); // Wait for 1 second
 
-    digitalWrite(LED_YELLOW, HIGH); // Simulate collection with yellow LED
+    digitalWrite(LED_BLUE, HIGH); // Simulate collection with BLUE LED
     servo.write(90); // Move servo to 90 degrees to simulate collection
     delay(1000); // Wait for 1 second to simulate collection time
     servo.write(0); // Move servo back to 0 degrees
-    digitalWrite(LED_YELLOW, LOW); // Turn off yellow LED
+    digitalWrite(LED_BLUE, LOW); // Turn off BLUE LED
     digitalWrite(LED_RED, LOW); // Turn off red LED
 
     lixoDetectado = true;
   }
 
   // Check for irregularities
-  if (lixoDetectado || temperatureC >= 35) {
+  if (lixoDetectado || temperatureC >= 35 || pH < 6.5 || pH > 7.5) {
     // Save irregularity to EEPROM
-    saveIrregularity(now, temperatureC, lixoDetectado);
+    saveIrregularity(now, temperatureC, lixoDetectado, pH);
   }
 
-  printStatus(now, temperatureC, lixoDetectado);
+  printStatus(now, temperatureC, lixoDetectado, pH);
 
   delay(5000); // Delay between readings
 }
 
-void saveIrregularity(DateTime timestamp, float temperatureC, bool lixoDetectado) {
+void saveIrregularity(DateTime timestamp, float temperatureC, bool lixoDetectado, float pH) {
   Serial.println("Saving irregularity to EEPROM");
 
   // Converter valores para int para armazenamento
   int tempInt = (int)(temperatureC * 100);
   byte lixoStatus = lixoDetectado ? 1 : 0;
+  int pHInt = (int)(pH * 100);
 
   // Escrever dados na EEPROM
   EEPROM.put(currentAddress, timestamp.unixtime());
   EEPROM.put(currentAddress + 4, tempInt);
   EEPROM.put(currentAddress + 6, lixoStatus);
+  EEPROM.put(currentAddress + 7, pHInt);
 
   // Atualiza o endereço para o próximo registro
   getNextAddress();
@@ -155,7 +169,7 @@ void getNextAddress() {
   }
 }
 
-void printStatus(DateTime timestamp, float temperatureC, bool lixoDetectado) {
+void printStatus(DateTime timestamp, float temperatureC, bool lixoDetectado, float pH) {
   Serial.print(timestamp.year());
   Serial.print("-");
   Serial.print(timestamp.month() < 10 ? "0" : "");
@@ -175,5 +189,7 @@ void printStatus(DateTime timestamp, float temperatureC, bool lixoDetectado) {
   Serial.print("       ");
   Serial.print(temperatureC);
   Serial.print(" graus    Lixo: ");
-  Serial.println(lixoDetectado ? "SIM" : "NAO");
+  Serial.print(lixoDetectado ? "SIM" : "NAO");
+  Serial.print("    pH: ");
+  Serial.println(pH);
 }
