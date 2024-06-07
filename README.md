@@ -3,7 +3,7 @@
 SeaGuard é um projeto de monitoramento e coleta de lixo no mar utilizando sensores e um servo motor para detecção e remoção de detritos. O sistema mede a temperatura da água, o pH da água e detecta a presença de lixo, registrando irregularidades em uma memória EEPROM.
 
 <p align="center">
-  ![image](https://github.com/LucasLCabral/SeaGuard-GlobalSolution/assets/162235385/73b9d8b4-dbf6-407c-b2bd-6d56c04869ca)
+  <img src="https://github.com/LucasLCabral/SeaGuard-GlobalSolution/assets/162235385/73b9d8b4-dbf6-407c-b2bd-6d56c04869ca">
 </p>
 
 ## Link Wokwi:
