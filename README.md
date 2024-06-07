@@ -6,9 +6,6 @@ SeaGuard é um projeto de monitoramento e coleta de lixo no mar utilizando senso
   <img src="https://github.com/LucasLCabral/SeaGuard-GlobalSolution/assets/162235385/73b9d8b4-dbf6-407c-b2bd-6d56c04869ca">
 </p>
 
-## Link Wokwi:
-https://wokwi.com/projects/400062320117465089
-
 ## Solução Proposta
 
 O objetivo do projeto SeaGuard é monitorar e coletar lixo no mar, utilizando a plataforma Arduino em conjunto com diversos sensores e atuadores. A solução busca detectar a presença de detritos na água e registrar irregularidades, como temperaturas anormais e níveis de pH, para melhorar a saúde do ecossistema marinho.
@@ -90,7 +87,7 @@ Mantém o registro de tempo real para timestamp das leituras e irregularidades.
 
 ## Link Visualização
 
-[Visualizar no Wokwi](https://wokwi.com/projects/399235287995375617)
+[Visualizar no Wokwi](https://wokwi.com/projects/400062320117465089)
 
 ## Código
 
@@ -584,4 +581,4 @@ void printStatus(DateTime timestamp, float temperatureC, bool lixoDetectado, flo
 # Contato
 Lucas Ludovico Cabral - lucasludovicocabraal@gmail.com
 
-Projeto Link: https://github.com/LucasLCabral/SeaGuard-GlobalSolution
+[Link no Projeto](https://github.com/LucasLCabral/SeaGuard-GlobalSolution)
